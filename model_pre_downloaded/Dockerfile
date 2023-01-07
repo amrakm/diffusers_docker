@@ -53,7 +53,7 @@ RUN mkdir /app/model_data
 
 # download model
 
-ENV HUGGINGFACE_TOKEN=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
+# ENV HUGGINGFACE_TOKEN=xxxxxx
 
 # read env variable HUGGINGFACE_TOKEN and add it to ENV variable
 # ENV HUGGINGFACE_TOKEN=$HUGGINGFACE_TOKEN

@@ -10,7 +10,7 @@ import argparse
 def runMain(model_id, cache_path):
 
     # hugging_face_token = os.environ["HUGGINGFACE_TOKEN"]
-    hugging_face_token="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"
+    hugging_face_token="xxxxxxxx"
     model_id = "runwayml/stable-diffusion-v1-5"
     cache_path = "/app/data"
 
