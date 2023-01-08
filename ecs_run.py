@@ -5,7 +5,7 @@ def runMain():
 
     from diffusers import StableDiffusionPipeline
     import torch
-
+    torch.backends.cudnn.enabled = False
     # check if GPU is available
     if torch.cuda.is_available():
         print("GPU is available")
