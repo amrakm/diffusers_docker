@@ -41,7 +41,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
          xformers==0.0.16rc399 \
          huggingface_hub
 
-RUN python -c 'from huggingface_hub.hf_api import HfFolder; HfFolder.save_token("xxxxxxxxx")'
+RUN python -c 'from huggingface_hub.hf_api import HfFolder; HfFolder.save_token("xxx")'
 
 
 WORKDIR /app
@@ -65,7 +65,7 @@ RUN HUGGINGFACE_TOKEN=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 python3 download_dif
 
 ENTRYPOINT ["/bin/bash"]
 
-# ENTRYPOINT ["python3", "ecs_run.py", "--model_id", "runwayml/stable-diffusion-v1-5", "--cache_path", "/app/model_data"]
+# ENTRYPOINT ["python3", "ecs_run.py", "--model_id", "runwayml/stable-diffusion-v1-5", "--cache_path", "./model_data"]
 
 
 ## build docker image with env variable HUGGINGFACE_TOKEN=your_token
