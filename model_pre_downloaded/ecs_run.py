@@ -12,19 +12,19 @@ def runMain(model_id, cache_path):
 
     print(f'loading model {model_id} from {cache_path}')
 
+    ## print list of folders in cache_path
+    import os
+    for folder in os.listdir(cache_path):
+        print(folder)
+
+
     start_time = time.time()
 
 
     torch.backends.cuda.matmul.allow_tf32 = True
 
-    # check if GPU is available
-    if torch.cuda.is_available():
-        print("GPU is available")
-    else:
-        print("GPU is not available")
-
     scheduler = diffusers.DPMSolverMultistepScheduler.from_pretrained(
-        cache_dir=cache_path,
+        cache_path,
         subfolder="scheduler",
         solver_order=2,
         prediction_type="epsilon",
@@ -32,18 +32,9 @@ def runMain(model_id, cache_path):
         algorithm_type="dpmsolver++",
         solver_type="midpoint",
         denoise_final=True,  # important if steps are <= 10
-        use_auth_token=hugging_face_token,
     )
-
-    # model_id = "runwayml/stable-diffusion-v1-5"
-    pipe = diffusers.StableDiffusionPipeline.from_pretrained(model_id=model_id,
-                                                            cache_dir=cache_path,
-                                                            scheduler=scheduler,
-                                                            use_auth_token=hugging_face_token,
-                                                            torch_dtype=torch.float16).to("cuda")
-                                                            
+    pipe = diffusers.StableDiffusionPipeline.from_pretrained(cache_path, scheduler=scheduler).to("cuda")
     pipe.enable_xformers_memory_efficient_attention()
-
 
     print("time to load model: %s seconds" % (time.time() - start_time))
 

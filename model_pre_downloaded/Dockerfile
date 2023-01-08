@@ -38,8 +38,10 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
          transformers \
          triton \
          safetensors \
-         xformers==0.0.16rc399
+         xformers==0.0.16rc399 \
+         huggingface_hub
 
+RUN python -c 'from huggingface_hub.hf_api import HfFolder; HfFolder.save_token("xxxxxxxxx")'
 
 
 WORKDIR /app
@@ -58,10 +60,12 @@ RUN mkdir /app/model_data
 # read env variable HUGGINGFACE_TOKEN and add it to ENV variable
 # ENV HUGGINGFACE_TOKEN=$HUGGINGFACE_TOKEN
 
-RUN python3 download_diffusers.py --model_id runwayml/stable-diffusion-v1-5 --cache_path /app/model_data
+RUN HUGGINGFACE_TOKEN=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 python3 download_diffusers.py --model_id runwayml/stable-diffusion-v1-5 --cache_path /app/model_data
 
 
-ENTRYPOINT ["python3", "ecs_run.py", "--model_id", "runwayml/stable-diffusion-v1-5", "--cache_path", "/app/model_data"]
+ENTRYPOINT ["/bin/bash"]
+
+# ENTRYPOINT ["python3", "ecs_run.py", "--model_id", "runwayml/stable-diffusion-v1-5", "--cache_path", "/app/model_data"]
 
 
 ## build docker image with env variable HUGGINGFACE_TOKEN=your_token
@@ -70,3 +74,5 @@ ENTRYPOINT ["python3", "ecs_run.py", "--model_id", "runwayml/stable-diffusion-v1
 
 # run docker image with env variable HUGGINGFACE_TOKEN=your_token
 # docker run -it --rm --gpus all -e HUGGINGFACE_TOKEN=your_token <image_id>
+
+# python3 ecs_run.py --model_id runwayml/stable-diffusion-v1-5 --cache_path ./model_data
