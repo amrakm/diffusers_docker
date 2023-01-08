@@ -2,6 +2,7 @@
 # added download diffuser to image at build 
 
 
+
 FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu20.04
 LABEL maintainer="Hugging Face"
 LABEL repository="diffusers"
@@ -41,7 +42,6 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
          xformers==0.0.16rc399 \
          huggingface_hub
 
-RUN python -c 'from huggingface_hub.hf_api import HfFolder; HfFolder.save_token("hf_XXXX")'
 
 
 WORKDIR /app
@@ -50,7 +50,7 @@ COPY download_diffusers.py /app/
 
 RUN mkdir /app/model_data
 
-RUN python3 download_diffusers.py --model_id runwayml/stable-diffusion-v1-5 --cache_path /app/model_data
+RUN HUGGINGFACE_TOKEN=hf_XXXXX python3 download_diffusers.py --model_id runwayml/stable-diffusion-v1-5 --cache_path /app/model_data
 
 
 ENTRYPOINT ["/bin/bash"]
